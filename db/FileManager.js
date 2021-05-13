@@ -53,6 +53,8 @@ function deleteById(id) {
         }
     })
 }
+
+//===writes json file whenever a note is added and/or deleted
 function save(newDb) {
     return new Promise(function (resolve, reject) {
         fs.writeFile(file_path, JSON.stringify(newDb), function (error) {
@@ -65,7 +67,15 @@ function newId() {
     return new Promise(async function (resolve, reject) {
         try {
             const notes = await get();
-            resolve(notes[notes.length - 1].id + 1)
+            // resolve(notes[notes.length - 1].id + 1)
+            //try block code
+            var returnId = 0
+            if(notes.length){
+             returnId = notes[notes.length - 1].id + 1
+            } else {
+             returnId = 1
+            }
+            resolve(returnId)
         } catch (error) {
             reject(error)
         }
@@ -77,12 +87,3 @@ module.exports = {
     create,
     deleteById
 }
-
-
-// Add(1, 3, function (sum) {
-//     console.log(sum)
-// })
-
-// function Add(x, y, cb) {
-//     cb(x + y)
-// }
