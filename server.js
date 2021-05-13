@@ -11,33 +11,66 @@ const PORT = process.env.PORT || 7540;
 //====sets up Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static("public"));
 
 
-//====ROUTES
+//===============ROUTES
+const FileManager = require("./db/FileManager")
 
-
-//===send notes.html file
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "/public/index.html"));
+//======api routes
+// app.get("/api/notes", (req, res) => {
+//     FileManager.get(function (notes) {
+//         res.json(notes)
+//     })
+// });
+// app.get("/api/notes", (req, res) => {
+//     FileManager.get()
+//         .then(function (notes) {
+//             res.json(notes)
+//         })
+//         .catch(function (err) {
+//             res.status(500).send(err);
+//         })
+// });
+app.get("/api/notes", async (req, res) => {
+    try {
+        const notes = await FileManager.get()
+        res.json(notes)
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+//read by id
+app.post("/api/notes", async (req, res) => {
+    try {
+        await FileManager.create(req.body)
+        res.sendStatus(200)
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+//delete by id
+app.delete("/api/notes/:id", async (req, res) => {
+    try {
+        await FileManager.deleteById(req.params.id)
+        res.sendStatus(200)
+    } catch (error) {
+        res.status(500).send(error);
+    }
 });
 
+//======notes.html file
 app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, "/public/notes.html"));
 });
 
-app.get("/api/notes", (req, res) => {
-    res.json(notes)
-});
-//========read by id
-app.get("/api/notes/:id", (req, res) => {
-    res.json(notes[req.params.id]);
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "/public/index.html"));
 });
 
-//=======delete by id
-app.delete("api/notes/:id", (req, res) => {
-    res.json(notes[req.params.id]);
-});
 
+
+//==============SERVER LISTEN
 app.listen(PORT, () => console.log(`We chopping it up on PORT ${PORT}`));
 
 
