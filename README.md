@@ -13,13 +13,13 @@ When the user enters a new title, note, and clicks the save icon (located in the
 
 
 * User is greeted with a Note Taker landing page:
-<img src="publis/assets/images/note1.png" width="400">
+<img src="public/assets/images/note1.png" width="400">
 
 * Note page with existing list:
-<img src="publis/assets/images/note2.png" width="400">
+<img src="public/assets/images/note2.png" width="400">
 
 * Name note with Title, note, and save icon in navigation bar:
-<img src="publis/assets/images/note3.png" width="400">
+<img src="public/assets/images/note3.png" width="400">
 
 
 # Technology
